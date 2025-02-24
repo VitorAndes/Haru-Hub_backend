@@ -130,5 +130,6 @@ Fastify.get("/recentlyPlayedGames", async (request, reply) => {
 });
 
 Fastify.listen({
+	host: "0.0.0.0",
 	port: port,
 });
