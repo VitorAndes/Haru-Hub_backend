@@ -17,7 +17,7 @@ await Fastify.register(cors, {
 Fastify.get("/user", async (request, reply) => {
 	try {
 		const response = await fetch(
-			`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${steamApiKey}&steamids=${steamApiId}&format=json`,
+			`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=${steamApiKey}&steamids=${steamApiId}&format=json%l=portuguese`,
 		);
 		const data = await response.json();
 
@@ -52,7 +52,7 @@ Fastify.get("/games", async (request, reply) => {
 
 		const data = await response.json();
 
-		console.log("reponse games", data);
+		console.log("response games", data);
 
 		if (!data.response || !data.response.games) {
 			return reply.status(404).send({ error: "No games found" });
@@ -62,7 +62,7 @@ Fastify.get("/games", async (request, reply) => {
 
 		const detailsPromises = gameIds.map(async (gameId) => {
 			const detailsResponse = await fetch(
-				`https://store.steampowered.com/api/appdetails?appids=${gameId}`,
+				`https://store.steampowered.com/api/appdetails?appids=${gameId}&l=portuguese`,
 			);
 
 			if (!detailsResponse.ok) {
@@ -78,8 +78,7 @@ Fastify.get("/games", async (request, reply) => {
 			const key = Object.keys(details)[0];
 			acc[key] = details[key];
 			return acc;
-		}, {});
-
+		}, {});		
 		reply.send(combinedDetails);
 	} catch (error) {
 		console.error(error);
@@ -103,7 +102,7 @@ Fastify.get("/recentlyPlayedGames", async (request, reply) => {
 
 		const detailsPromises = gameIds.map(async (gameId) => {
 			const detailsResponse = await fetch(
-				`https://store.steampowered.com/api/appdetails?appids=${gameId}`,
+				`https://store.steampowered.com/api/appdetails?appids=${gameId}&l=portuguese`,
 			);
 
 			if (!detailsResponse.ok) {
